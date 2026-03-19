@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Sparkles, Github, Twitter, Linkedin } from 'lucide-react';
+import { Brain, Sparkles, Github, Twitter, Linkedin, Sun, Moon } from 'lucide-react';
 import UploadForm from './components/UploadForm';
 import SkillTable from './components/SkillTable';
 import GapSummary from './components/GapSummary';
 import Roadmap from './components/Roadmap';
 import ReasoningPanel from './components/ReasoningPanel';
-import { AnimatedThemeToggler } from './components/ui/AnimatedThemeToggler';
 import SkillGraph from './components/SkillGraph';
 import SkillDNA from './components/SkillDNA';
 import SignInAnimation from './components/SignInAnimation';
@@ -56,6 +55,25 @@ export default function App() {
   const [showResults, setShowResults] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const profileOptions = mockProfiles.map((d) => ({ id: d.id, name: d.name }));
 
@@ -92,7 +110,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-mesh-gradient selection:bg-indigo-500/30 dark:selection:bg-indigo-500/50">
+    <div className="min-h-screen bg-mesh-gradient selection:bg-indigo-500/30 dark:selection:bg-indigo-500/50 transition-colors duration-300 dark:bg-slate-950">
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 transition-colors">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -126,9 +144,21 @@ export default function App() {
                 <span className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-tight">AI Active</span>
               </div>
 
+              <button
+                onClick={toggleDarkMode}
+                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 group"
+                aria-label="Toggle Dark Mode"
+              >
+                {darkMode ? (
+                  <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform" />
+                ) : (
+                  <Moon className="w-5 h-5 group-hover:-rotate-12 transition-transform" />
+                )}
+              </button>
+
               <div className="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1 hidden sm:block" />
 
-              <div className="flex items-center gap-1">
+              <div className="hidden sm:flex items-center gap-1">
                 <a href="#" className="p-2 text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
                   <Github className="w-5 h-5" />
                 </a>
@@ -136,7 +166,6 @@ export default function App() {
                   <Twitter className="w-5 h-5" />
                 </a>
               </div>
-              <AnimatedThemeToggler />
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -212,7 +241,6 @@ export default function App() {
                 >
                   {/* Role Header */}
                   <div className="overflow-hidden relative p-8 bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 rounded-[2.5rem] text-white shadow-2xl shadow-indigo-500/20">
-                    {/* Background Decorative Elements */}
                     <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
                     <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none" />
 
