@@ -28,7 +28,7 @@ function SkeletonLoader() {
           </div>
         </div>
       </div>
-      
+
       {/* Skills Table Skeleton */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-8">
         <div className="animate-pulse space-y-4">
@@ -58,7 +58,7 @@ export default function App() {
     setIsAnalyzing(true);
     setShowResults(false);
     setShowSkeleton(true);
-    
+
     // Simulate analysis with loading
     setTimeout(() => {
       const data = mockProfiles.find((d) => d.id === selectedProfile);
@@ -139,10 +139,10 @@ export default function App() {
             <span>Powered by Advanced AI</span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-            Bridge Your <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Skill Gaps</span>
+            Expert <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Skill Gap</span> Analysis
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Upload your resume and job description to get a personalized skill analysis 
+            Upload your resume and job description to get a personalized skill analysis
             and learning roadmap tailored to your career goals.
           </p>
         </motion.div>
