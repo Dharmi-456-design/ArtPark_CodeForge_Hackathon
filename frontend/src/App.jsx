@@ -198,15 +198,15 @@ export default function App() {
 
   const handleAssessment = async (step, passed) => {
     if (!currentData?.sessionId) return;
-    
+
     try {
       const response = await api.recordAssessmentResult(
-        currentData.sessionId, 
-        step.course_id, 
+        currentData.sessionId,
+        step.course_id,
         passed ? 85 : 40, // Mock score for now until SkillQuiz is expanded
         passed
       );
-      
+
       if (response.success) {
         setCurrentData(prev => ({
           ...prev,
@@ -275,9 +275,9 @@ export default function App() {
                 aria-label="Toggle Dark Mode"
               >
                 {darkMode ? (
-                  <Sun className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-                ) : (
                   <Moon className="w-5 h-5 group-hover:-rotate-12 transition-transform" />
+                ) : (
+                  <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform" />
                 )}
               </button>
 
@@ -477,11 +477,11 @@ export default function App() {
                         skills={currentData.skills}
                         role={currentData.targetJob || currentData.role}
                       />
-                        <ResumeOptimizer
-                          resumeText={currentData.resumeText}
-                          jobDescription={currentData.jobDescription}
-                          missingSkills={currentData.missingSkillsList}
-                          currentSkills={currentData.currentSkills}
+                      <ResumeOptimizer
+                        resumeText={currentData.resumeText}
+                        jobDescription={currentData.jobDescription}
+                        missingSkills={currentData.missingSkillsList}
+                        currentSkills={currentData.currentSkills}
                         targetRole={currentData.role}
                         seniority="Mid" // Or currentData.seniority
                       />

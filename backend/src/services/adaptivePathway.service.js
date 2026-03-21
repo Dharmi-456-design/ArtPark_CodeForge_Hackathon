@@ -124,6 +124,25 @@ const resolvePrerequisites = (skillName, graph, knownSkills, visited = new Set()
   return result;
 };
 
+/**
+ * Resolves entire tree including known skills for graph visualization.
+ */
+const resolveFullTree = (skillName, graph, visited = new Set()) => {
+  const normalized = normalizeSkill(skillName);
+  if (visited.has(normalized)) return [];
+  visited.add(normalized);
+
+  const prereqs = graph.get(normalized) || [];
+  const result = [];
+
+  for (const prereq of prereqs) {
+    const deeper = resolveFullTree(prereq, graph, visited);
+    result.push(...deeper);
+    if (!result.includes(prereq)) result.push(prereq);
+  }
+  return result;
+};
+
 // ── PHASE 2: Topological Sort (Kahn's Algorithm) ─────────────────────────────
 
 /**
@@ -414,39 +433,59 @@ const generateReasoningTrace = (pathwaySteps, graph, jdProfile, resumeProfile) =
  * @param {object[]} pathway 
  * @returns {object} { nodes, edges }
  */
-function convertPathwayToGraphData(pathway) {
-  const nodes = pathway.map((step, index) => ({
-    id: step.course_id || `node-${index}`,
-    type: 'custom',
-    position: {
-      x: (index % 4) * 250,
-      y: Math.floor(index / 4) * 180
-    },
-    data: {
-      label: step.course_title,
-      category: step.domain,
-      difficulty: step.proficiency_target,
-      duration: step.estimated_hours,
-      status: step.status || 'locked',
-      reasoningTrace: step.reasoning
+function convertPathwayToGraphData(pathway, allSkillsInTree, resumeProfile, graph) {
+  const resumeSkillNames = new Set((resumeProfile.skills || []).map(s => normalizeSkill(s.name)));
+  
+  // Create nodes for EVERYTHING in the tree
+  const nodes = [...allSkillsInTree].map((skillName, index) => {
+    const isCompleted = resumeSkillNames.has(skillName);
+    const inPathway = pathway.find(s => s.skill_name === skillName);
+    
+    // Status logic:
+    // If in resume -> completed
+    // If first in remaining pathway -> current
+    // If later in pathway -> locked
+    let status = isCompleted ? 'matched' : 'locked';
+    if (!isCompleted && inPathway) {
+      const pathIdx = pathway.findIndex(p => p.skill_name === skillName);
+      if (pathIdx === 0) status = 'weak'; // Using 'weak' for current focus
+      else status = 'missing';
     }
-  }));
+
+    const course = findCourse(skillName);
+
+    return {
+      id: skillName, // Use skill name as ID for easier edge mapping
+      type: 'skillNode',
+      position: { x: 0, y: 0 }, // Frontend will re-layout
+      data: {
+        label: skillName,
+        courseTitle: course?.title || skillName,
+        status: status,
+        skill: {
+          name: skillName,
+          yourLevel: isCompleted ? 3 : 0,
+          requiredLevel: 3
+        }
+      }
+    };
+  });
 
   const edges = [];
-  pathway.forEach((step) => {
-    const prereqs = step.prerequisites_ids || [];
-    if (prereqs.length > 0) {
-      prereqs.forEach((prereqId) => {
+  [...allSkillsInTree].forEach((skillName) => {
+    const prereqs = graph.get(skillName) || [];
+    prereqs.forEach((prereqName) => {
+      if (allSkillsInTree.has(prereqName)) {
         edges.push({
-          id: `edge-${prereqId}-${step.course_id}`,
-          source: prereqId,
-          target: step.course_id,
-          type: 'smoothstep',
-          animated: step.status === 'current',
-          style: { stroke: step.status === 'completed' ? '#10b981' : '#6366f1' }
+          id: `edge-${prereqName}-${skillName}`,
+          source: prereqName,
+          target: skillName,
+          animated: false,
+          style: { stroke: '#4A4A4A', strokeWidth: 1.5 },
+          markerEnd: { type: MarkerType.ArrowClosed, color: '#4A4A4A' }
         });
-      });
-    }
+      }
+    });
   });
 
   return { nodes, edges };
@@ -479,10 +518,16 @@ const generateAdaptivePathway = async (resumeProfile, jdProfile, skillGap, learn
 
   // Resolve prerequisites for each missing skill
   const allSkillsToLearn = new Set();
+  const fullTreeSkills = new Set();
   for (const skill of [...missingSkills, ...profGapSkills]) {
     const prereqs = resolvePrerequisites(skill, graph, knownSkills);
     for (const p of prereqs) allSkillsToLearn.add(p);
     allSkillsToLearn.add(skill);
+
+    // Full tree for graph visualization
+    const fullPrereqs = resolveFullTree(skill, graph);
+    for (const p of fullPrereqs) fullTreeSkills.add(p);
+    fullTreeSkills.add(skill);
   }
 
   // ── Build skill metadata map ────────────────────────────────────────────────
@@ -597,7 +642,7 @@ const generateAdaptivePathway = async (resumeProfile, jdProfile, skillGap, learn
 
   logger.info(`✅ Pathway generation complete. ${finalPathway.length} steps, ~${totalHours}h total.`);
 
-  const graphData = convertPathwayToGraphData(finalPathway);
+  const graphData = convertPathwayToGraphData(finalPathway, fullTreeSkills, resumeProfile, graph);
 
   return {
     pathway: finalPathway,

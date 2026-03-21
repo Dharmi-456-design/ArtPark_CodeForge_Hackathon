@@ -61,21 +61,21 @@ export default function FeaturesSection() {
         <div className="flex items-center justify-center gap-2 text-indigo-500 font-bold uppercase tracking-widest text-xs mb-4">
           <span>&mdash;</span> Platform Features
         </div>
-        <h2 className="text-3xl md:text-5xl font-black mb-6 text-slate-900 dark:text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+        <h2 className="text-3xl md:text-5xl font-black mb-6" style={{ fontFamily: "'Syne', sans-serif" }}>
           Every Tool to Close Your Skill Gap
         </h2>
       </motion.div>
 
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {features.map((f, i) => (
-          <motion.div key={i} variants={item} whileHover={{ y: -10, boxShadow: '0 24px 48px rgba(139,92,246,0.25)', borderColor: 'rgba(139,92,246,0.4)' }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className={`group flex flex-col p-8 rounded-3xl bg-white dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 ${f.wide ? 'md:col-span-2' : ''} shadow-sm dark:shadow-none`}>
+          <motion.div key={i} variants={item} whileHover={{ y: -10, boxShadow: '0 24px 48px rgba(139,92,246,0.25)', borderColor: 'rgba(139,92,246,0.4)' }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className={`group flex flex-col p-8 rounded-3xl bg-slate-900/40 backdrop-blur-md border border-white/10 ${f.wide ? 'md:col-span-2' : ''}`}>
             <motion.div className="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center mb-6" transition={{ type: 'spring', stiffness: 300, damping: 20 }} variants={{ hover: { y: -6, rotate: 10, scale: 1.15 } }}>
               {f.i}
             </motion.div>
-            <h3 className="text-2xl font-black mb-3 text-slate-900 dark:text-white" style={{ fontFamily: "'Syne', sans-serif" }}>{f.t}</h3>
+            <h3 className="text-2xl font-black mb-3 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>{f.t}</h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-4">{f.d}</p>
             {f.ex && <div className="mb-6">{f.ex}</div>}
-            <div className="mt-auto self-start bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3 py-1 rounded-md text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+            <div className="mt-auto self-start bg-white/5 border border-white/10 px-3 py-1 rounded-md text-[10px] font-bold text-slate-400 uppercase tracking-widest">
               {f.tag}
             </div>
           </motion.div>

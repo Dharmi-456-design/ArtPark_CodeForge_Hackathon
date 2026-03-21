@@ -330,14 +330,20 @@ const SkillNode = ({ data }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 // Layout helper
 // ─────────────────────────────────────────────────────────────────────────────
-const nodeWidth = 230;
-const nodeHeight = 90;
+const nodeWidth = 260; // Increased to prevent overlaps
+const nodeHeight = 100; // Increased
 const isHorizontal = true;
 
 const getLayoutedElements = (nodes, edges) => {
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
-  dagreGraph.setGraph({ rankdir: 'LR', ranksep: 110, nodesep: 50 });
+  dagreGraph.setGraph({ 
+    rankdir: 'LR', 
+    ranksep: 140, // Increased spacing between ranks
+    nodesep: 80,  // Increased spacing between nodes in same rank
+    marginx: 50,
+    marginy: 50
+  });
 
   nodes.forEach(n => dagreGraph.setNode(n.id, { width: nodeWidth, height: nodeHeight }));
   edges.forEach(e => dagreGraph.setEdge(e.source, e.target));
@@ -388,21 +394,29 @@ const SkillGraph = ({ skills, graphData }) => {
   useEffect(() => {
     if (!graphData || !skills || skills.length === 0) return;
     
-    // If backend already provided nodes and edges (Fix 3), use them
+    // If backend already provided nodes and edges (Fix 3), use them but RE-LAYOUT for consistency
     if (graphData.nodes && graphData.edges) {
-      const themedNodes = graphData.nodes.map(n => ({
-        ...n,
-        type: 'skillNode',
-        data: { 
-          ...n.data, 
-          skill: skills.find(s => s.name === n.data.label) || { name: n.data.label, yourLevel: 1, requiredLevel: 3 },
-          graphTheme 
-        }
-      }));
-      setNodes(themedNodes);
-      setEdges(graphData.edges);
-      setIsReady(true);
-      return;
+      try {
+        const themedNodes = graphData.nodes.map(n => ({
+          ...n,
+          type: 'skillNode',
+          data: { 
+            ...n.data, 
+            skill: skills.find(s => s.name === n.data.label) || { name: n.data.label, yourLevel: 1, requiredLevel: 3 },
+            status: n.data.status || 'locked',
+            graphTheme 
+          }
+        }));
+
+        // Force a layout pass even on backend nodes
+        const { nodes: ln, edges: le } = getLayoutedElements(themedNodes, graphData.edges);
+        setNodes([...ln]);
+        setEdges([...le]);
+        setIsReady(true);
+        return;
+      } catch (err) {
+        console.error("Backend data layout failed:", err);
+      }
     }
 
     // Fallback for legacy format or missing data
@@ -450,8 +464,8 @@ const SkillGraph = ({ skills, graphData }) => {
     setEdges(eds =>
       eds.map(e => ({
         ...e,
-        style: { ...e.style, stroke: e.animated ? t.edgeActive : t.edgeDefault },
-        markerEnd: { ...e.markerEnd, color: e.animated ? t.edgeActive : t.edgeDefault },
+        style: { ...e.style, stroke: e.animated ? t.edgeActive : (t.edgeDefault || '#4A4A4A'), strokeWidth: e.animated ? 2.5 : 1.5 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: e.animated ? t.edgeActive : (t.edgeDefault || '#4A4A4A'), width: 14, height: 14 },
       }))
     );
   }, [graphTheme]);
