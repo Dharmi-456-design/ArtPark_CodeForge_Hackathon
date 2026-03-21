@@ -19,30 +19,30 @@ export default function Hero() {
       <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-20"></div>
 
       <div className="max-w-7xl mx-auto px-6 text-center relative z-10 w-full">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-400 text-xs font-bold uppercase tracking-widest mb-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 dark:bg-violet-500/10 text-indigo-600 dark:text-violet-400 text-xs font-bold uppercase tracking-widest mb-8">
           ⚡ CodeForge Hackathon &middot; Next-Gen AI Engine
         </motion.div>
 
         {/* Floating Chips */}
-        <motion.div variants={floatVariants(5)} animate="animate" className="hidden lg:block absolute top-[20%] left-[10%] px-4 py-2 rounded-full border border-indigo-500/50 bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-lg whitespace-nowrap">
+        <motion.div variants={floatVariants(5)} animate="animate" className="hidden lg:block absolute top-[20%] left-[10%] px-4 py-2 rounded-full border border-indigo-500/30 dark:border-indigo-500/50 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-xl dark:shadow-lg whitespace-nowrap text-slate-900 dark:text-white">
           ✦ Skill Match: 94%
         </motion.div>
-        <motion.div variants={floatVariants(4, 1)} animate="animate" className="hidden lg:block absolute top-[30%] right-[10%] px-4 py-2 rounded-full border border-emerald-500/50 bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-lg whitespace-nowrap">
+        <motion.div variants={floatVariants(4, 1)} animate="animate" className="hidden lg:block absolute top-[30%] right-[10%] px-4 py-2 rounded-full border border-emerald-500/30 dark:border-emerald-500/50 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-xl dark:shadow-lg whitespace-nowrap text-slate-900 dark:text-white">
           🧬 DNA Analyzed
         </motion.div>
-        <motion.div variants={floatVariants(6, 0.5)} animate="animate" className="hidden lg:block absolute bottom-[25%] left-[15%] px-4 py-2 rounded-full border border-amber-500/50 bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-lg whitespace-nowrap">
+        <motion.div variants={floatVariants(6, 0.5)} animate="animate" className="hidden lg:block absolute bottom-[25%] left-[15%] px-4 py-2 rounded-full border border-amber-500/30 dark:border-amber-500/50 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-xl dark:shadow-lg whitespace-nowrap text-slate-900 dark:text-white">
           🚀 Roadmap Ready
         </motion.div>
-        <motion.div variants={floatVariants(4.5, 2)} animate="animate" className="hidden lg:block absolute bottom-[35%] right-[12%] px-4 py-2 rounded-full border border-rose-500/50 bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-lg whitespace-nowrap">
+        <motion.div variants={floatVariants(4.5, 2)} animate="animate" className="hidden lg:block absolute bottom-[35%] right-[12%] px-4 py-2 rounded-full border border-rose-500/30 dark:border-rose-500/50 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md text-xs font-bold shadow-xl dark:shadow-lg whitespace-nowrap text-slate-900 dark:text-white">
           ⚡ AI Active &middot; Gemini
         </motion.div>
 
-        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-[clamp(3rem,7vw,5.5rem)] font-black leading-[1.1] mb-6 tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-[clamp(3rem,7vw,5.5rem)] font-black leading-[1.1] mb-6 tracking-tight text-slate-900 dark:text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
           Intelligent Onboarding.<br />
-          <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Accelerated Careers.</span>
+          <span className="bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">Accelerated Careers.</span>
         </motion.h1>
 
-        <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+        <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
           Upload your resume and job description to get a personalized skill gap analysis, AI-generated learning roadmap, and technical interview simulation &mdash; powered by Gemini, GPT, and Groq.
         </motion.p>
 
@@ -50,7 +50,7 @@ export default function Hero() {
           <Link to="/upload" className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-xl text-white font-bold transition-all pulse-glow-btn flex items-center justify-center gap-2 group">
             🚀 Start Free Analysis &rarr;
           </Link>
-          <Link to="/dashboard" className="w-full sm:w-auto px-8 py-4 bg-transparent border border-slate-700 hover:border-indigo-500 hover:bg-slate-800/50 rounded-xl text-white font-bold transition-all flex items-center justify-center">
+          <Link to="/dashboard" className="w-full sm:w-auto px-8 py-4 bg-transparent border border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl text-slate-900 dark:text-white font-bold transition-all flex items-center justify-center">
             View Live Demo
           </Link>
         </motion.div>
@@ -62,8 +62,8 @@ export default function Hero() {
             { v: 'Instant', l: 'Roadmap + Interview', d: 3.5 },
             { v: '100%', l: 'Free to Try', d: 4.2 }
           ].map((stat, i) => (
-            <motion.div key={i} animate={{ y: [0, -6, 0] }} transition={{ duration: stat.d, repeat: Infinity, ease: 'easeInOut' }} className="px-6 py-4 rounded-3xl bg-slate-900/60 backdrop-blur-xl border border-white/10 flex-1 min-w-[150px]">
-              <div className="text-xl md:text-2xl font-black bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent mb-1" style={{ fontFamily: "'Syne', sans-serif" }}>{stat.v}</div>
+            <motion.div key={i} animate={{ y: [0, -6, 0] }} transition={{ duration: stat.d, repeat: Infinity, ease: 'easeInOut' }} className="px-6 py-4 rounded-3xl bg-white dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-white/10 flex-1 min-w-[200px] shadow-sm dark:shadow-none">
+              <div className="text-xl md:text-2xl font-black bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent mb-1" style={{ fontFamily: "'Syne', sans-serif" }}>{stat.v}</div>
               <div className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest">{stat.l}</div>
             </motion.div>
           ))}

@@ -275,9 +275,9 @@ export default function App() {
                 aria-label="Toggle Dark Mode"
               >
                 {darkMode ? (
-                  <Moon className="w-5 h-5 group-hover:-rotate-12 transition-transform" />
+                  <Sun className="w-5 h-5 group-hover:rotate-90 transition-transform" />
                 ) : (
-                  <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform" />
+                  <Moon className="w-5 h-5 group-hover:-rotate-12 transition-transform" />
                 )}
               </button>
 
